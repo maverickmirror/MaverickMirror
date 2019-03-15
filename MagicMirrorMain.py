@@ -5,6 +5,8 @@ from tkinter import *
 import time
 
 
+# weatherAPIToken = 6d60a7966b8e994764a623080558cf19
+
 largeText = 56
 mediumText = 28
 smallText = 18
