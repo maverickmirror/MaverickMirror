@@ -6,7 +6,14 @@ import time
 import requests
 import json
 import traceback
+import feedparser
+import schedule
 
+
+
+globalNews = True  # google news
+globalStockMarketNews = True # stock market
+newsFontSize = 15 # font size for the google news and stock market news
 
 
 weatherAPIToken = '6d60a7966b8e994764a623080558cf19'
@@ -154,6 +161,97 @@ class Weather(Frame):
         def convert_kelvin_to_fahrenheit(kelvin_temp):
             return 1.8 * (kelvin_temp - 273) + 32
 
+
+
+
+
+# google news class
+class googleNews(Frame):
+    def __init__(self, parent, *args, **kwargs):
+        Frame.__init__(self, parent, *args, **kwargs)
+        self.config(bg='black')     # background color
+        self.title = 'World news' # 'google news' is more internationally generic
+        self.newsLbl = Label(self, text=self.title, font=('Helvetica', newsFontSize), fg="white", bg="black")
+        self.newsLbl.pack(side=TOP, anchor=W)
+        self.headlinesContainer = Frame(self, bg="black")
+        self.headlinesContainer.pack(side=TOP)
+        self.getNews()
+
+    # get the world news information method
+    # parse it, check if a title exist, then result the specified number of google news titles.
+    def getNews(self):
+        try:
+            # remove all children
+            for widget in self.headlinesContainer.winfo_children():
+                widget.destroy()
+            # if the googleNews is true, then run this problem
+            if (globalNews):
+                # parsed a google news rss website
+                googleNewsFeedparsed = feedparser.parse("https://news.google.com/rss?hl=en-US&gl=US&ceid=US:en")
+
+                # if a title exist, then run top 3 news headlines;
+                if ('title' in googleNewsFeedparsed.feed):
+                    for post in googleNewsFeedparsed.entries[0:3]:
+                        headline = headLines(self.headlinesContainer, post.title)
+                        headline.pack(side=TOP, anchor=W)
+        except Exception as googleNewsException:
+            traceback.print_exc()
+            print ("Error: %s. Cannot get the google news." % googleNewsException)
+
+        # update news display every 30 minutes
+        self.after(1800, self.getNews)
+
+
+
+
+# yahoo financial website
+class yahooStockMarketNews(Frame):
+    def __init__(self, parent, *args, **kwargs):
+        Frame.__init__(self, parent, *args, **kwargs)
+        self.config(bg='black') # background color
+        self.title = 'Stock market news' # the stock market is more internationally generic
+        self.stockMarketLabel = Label(self, text=self.title, font=('Helvetica', newsFontSize), fg="white", bg="black")
+        self.stockMarketLabel.pack(side=TOP, anchor=W)
+        self.headlinesContainer = Frame(self, bg="black")
+        self.headlinesContainer.pack(side=TOP)
+        self.getStockMarket()
+
+    # get the stock market information method
+    # parse it, check if a title exist, then result the specified number of stock market news titles.
+    def getStockMarket(self):
+        try:
+            # remove all children
+            for widget in self.headlinesContainer.winfo_children():
+                widget.destroy()
+            # the the global stock market is true, then run this code
+            if (globalStockMarketNews):
+                # parsed a yahoo financial rss website
+                yahooStockMarketFeedparsed = feedparser.parse('http://finance.yahoo.com/rss/headline?s=yhoo,msft,tivo')
+
+                # this title a title exist, then return top 3 stock market news headlines
+                if ('title' in yahooStockMarketFeedparsed.feed):
+                    for post in yahooStockMarketFeedparsed.entries[0:3]:
+                        headline = headLines(self.headlinesContainer, post.title)
+                        headline.pack(side=TOP, anchor=W)
+        except Exception as stockMarketNews:
+            traceback.print_exc()
+            print ("Error: %s. Cannot get the Stock market news." % stockMarketNews)
+
+        # update stock market news every 30 minutes
+        self.after(1800, self.getStockMarket)
+
+
+
+class headLines(Frame):
+    def __init__(self, parent, event_name=""):
+        Frame.__init__(self, parent, bg='black')
+        self.eventName = event_name
+        self.eventNameLbl = Label(self, text=self.eventName, font=('Helvetica', newsFontSize), fg="white", bg="black")
+        self.eventNameLbl.pack(side=BOTTOM, anchor=N)
+
+
+
+
 class Display:
     def __init__(self):
         self.tk = Tk()
@@ -178,6 +276,16 @@ class Display:
         # creates weather and sets location on screen
         self.weather = Weather(self.topFrame)
         self.weather.pack(side=LEFT, anchor=N, padx=100, pady=60)
+
+        # initialize world News
+        # creates news and show it on the screen
+        self.myNews = googleNews(self.bottomFrame)
+        self.myNews.pack(side=BOTTOM, anchor=W, padx=100, pady=10)
+
+        # initialize stock Market News
+        # creates stock market news and show it on the screen
+        self.stockMarket = yahooStockMarketNews(self.bottomFrame)
+        self.stockMarket.pack(side=BOTTOM, anchor=W, padx=100, pady=10)
 
     def toggle_fullscreen(self, event=None):
         # toggles fullscreen and windowed
