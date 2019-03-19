@@ -204,43 +204,6 @@ class googleNews(Frame):
 
 
 
-# yahoo financial website
-class yahooStockMarketNews(Frame):
-    def __init__(self, parent, *args, **kwargs):
-        Frame.__init__(self, parent, *args, **kwargs)
-        self.config(bg='black') # background color
-        self.title = 'Stock market news' # the stock market is more internationally generic
-        self.stockMarketLabel = Label(self, text=self.title, font=('Helvetica', newsFontSize), fg="white", bg="black")
-        self.stockMarketLabel.pack(side=TOP, anchor=W)
-        self.headlinesContainer = Frame(self, bg="black")
-        self.headlinesContainer.pack(side=TOP)
-        self.getStockMarket()
-
-    # get the stock market information method
-    # parse it, check if a title exist, then result the specified number of stock market news titles.
-    def getStockMarket(self):
-        try:
-            # remove all children
-            for widget in self.headlinesContainer.winfo_children():
-                widget.destroy()
-            # the the global stock market is true, then run this code
-            if (globalStockMarketNews):
-                # parsed a yahoo financial rss website
-                yahooStockMarketFeedparsed = feedparser.parse('http://finance.yahoo.com/rss/headline?s=yhoo,msft,tivo')
-
-                # this title a title exist, then return top 3 stock market news headlines
-                if ('title' in yahooStockMarketFeedparsed.feed):
-                    for post in yahooStockMarketFeedparsed.entries[0:3]:
-                        headline = headLines(self.headlinesContainer, post.title)
-                        headline.pack(side=TOP, anchor=W)
-        except Exception as stockMarketNews:
-            traceback.print_exc()
-            print ("Error: %s. Cannot get the Stock market news." % stockMarketNews)
-
-        # update stock market news every 30 minutes
-        self.after(1800, self.getStockMarket)
-
-
 
 class headLines(Frame):
     def __init__(self, parent, event_name=""):
