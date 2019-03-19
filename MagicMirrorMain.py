@@ -245,10 +245,7 @@ class Display:
         self.myNews = googleNews(self.bottomFrame)
         self.myNews.pack(side=BOTTOM, anchor=W, padx=100, pady=10)
 
-        # initialize stock Market News
-        # creates stock market news and show it on the screen
-        self.stockMarket = yahooStockMarketNews(self.bottomFrame)
-        self.stockMarket.pack(side=BOTTOM, anchor=W, padx=100, pady=10)
+
 
     def toggle_fullscreen(self, event=None):
         # toggles fullscreen and windowed
