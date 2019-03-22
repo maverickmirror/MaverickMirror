@@ -213,6 +213,31 @@ class headLines(Frame):
         self.eventNameLbl.pack(side=BOTTOM, anchor=N)
 
 
+class Quotes(Frame):
+    def __init__(self, parent, *args, **kwargs):
+        Frame.__init__(self, parent, *args, **kwargs)
+        self.quoteLbl = Text(self, font=('Helvetica', smallText), fg="white", bg="black", height=4, width=50)
+        self.quoteLbl.pack(side=TOP, anchor=W)
+
+        self.quotes_get()
+
+
+
+    def quotes_get(self):
+        try:
+            url = 'http://api.forismatic.com/api/1.0/?method=getQuote&format=json&lang=en'
+            res = requests.get(url)
+            # print res
+            s = res.text
+            s.replace('\r\n', '')
+            s.replace("\'", "'")
+            data = json.loads(s)
+            self.quoteLbl.insert(END, data["quoteText"] + "\n" + "- " + data["quoteAuthor"])
+
+            # print data
+            # print self.data_get(self.data_fetch(url))
+        except IOError:
+            print('no internet')
 
 
 class Display:
@@ -244,6 +269,12 @@ class Display:
         # creates news and show it on the screen
         self.myNews = googleNews(self.bottomFrame)
         self.myNews.pack(side=BOTTOM, anchor=W, padx=100, pady=10)
+
+        #initialize quote
+        #create quote and show it on the screen
+        self.quote = Quotes(self.topFrame)
+        self.quote.pack(side=TOP, anchor=E, padx=100, pady=60)
+
 
 
 
