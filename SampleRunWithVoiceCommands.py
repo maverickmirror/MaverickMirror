@@ -102,7 +102,6 @@ def start_speech_recording():
 #
 #
 #
-#
 # def run_animation():
 #     while True:
 #         try:
