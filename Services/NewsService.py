@@ -35,11 +35,3 @@ class NewsService():
 NewsService()
 
 
-
-
-
-
-
-
-
-

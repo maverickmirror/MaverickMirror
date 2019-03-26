@@ -35,13 +35,13 @@ class Clock(Frame):
 
         # create clock face and change attributes (font, size, color)
         self.time = ''
-        self.timeLabel = Label(self, font=("MS Sans Serif", largeText), fg="white", bg="black")
+        self.timeLabel = Label(self, font=("Verdana", largeText), fg="white", bg="black")
         # sets location on screen and orientation
         self.timeLabel.pack(side=TOP, anchor=N)
 
         # create day of week and change attributes (font, size, color)
         self.dayOfWeek = ''
-        self.dayLabel = Label(self, font=("MS Sans Serif", smallText), fg="white", bg="black")
+        self.dayLabel = Label(self, font=("Verdana", smallText), fg="white", bg="black")
         # sets location on screen and orientation
         self.dayLabel.pack(side=TOP, anchor=E)
 
@@ -204,7 +204,6 @@ class googleNews(Frame):
 
 
 
-
 class headLines(Frame):
     def __init__(self, parent, event_name=""):
         Frame.__init__(self, parent, bg='black')
@@ -215,8 +214,10 @@ class headLines(Frame):
 
 class Quotes(Frame):
     def __init__(self, parent, *args, **kwargs):
-        Frame.__init__(self, parent, *args, **kwargs)
-        self.quoteLbl = Text(self, font=('Helvetica', smallText), fg="white", bg="black", height=4, width=50)
+        Frame.__init__(self, parent, bg='black')
+        self.quote = ''
+        #self.quoteLbl = Text(self, font=('Verdana', smallText), fg="white", bg="black", height=4, width=50)
+        self.quoteLbl = Label(self, font=('Verdana', smallText), fg="white", bg="black", height=4, width=50)
         self.quoteLbl.pack(side=TOP, anchor=W)
 
         self.quotes_get()
@@ -232,8 +233,11 @@ class Quotes(Frame):
             s.replace('\r\n', '')
             s.replace("\'", "'")
             data = json.loads(s)
-            self.quoteLbl.insert(END, data["quoteText"] + "\n" + "- " + data["quoteAuthor"])
+            #self.quoteLbl.insert(END, data["quoteText"] + "\n" + "- " + data["quoteAuthor"])
 
+            quote = data["quoteText"] + "\n" + "- " + data["quoteAuthor"]
+            self.quote = quote
+            self.quoteLbl.config(text=quote)
             # print data
             # print self.data_get(self.data_fetch(url))
         except IOError:
@@ -244,6 +248,7 @@ class Display:
     def __init__(self):
         self.tk = Tk()
         self.tk.configure(background='black')
+        self.tk.attributes("-fullscreen", True)
         # Create locations on the screen
         self.topFrame = Frame(self.tk, background='black')
         self.bottomFrame = Frame(self.tk, background='black')
@@ -273,7 +278,7 @@ class Display:
         #initialize quote
         #create quote and show it on the screen
         self.quote = Quotes(self.topFrame)
-        self.quote.pack(side=TOP, anchor=E, padx=100, pady=60)
+        self.quote.pack(side=RIGHT, anchor=N, padx=100, pady=60)
 
 
 

@@ -1,3 +1,18 @@
+from tkinter import *
+import time
+import requests
+import json
+import traceback
+import feedparser
+import schedule
+
+
+
+globalNews = True  # google news
+globalStockMarketNews = True # stock market
+newsFontSize = 15 # font size for the google news and stock market news
+
+
 weatherAPIToken = '6d60a7966b8e994764a623080558cf19'
 weatherLang = 'en'
 weatherUnit = 'us'
@@ -9,7 +24,6 @@ largeText = 56
 mediumText = 28
 smallText = 18
 
-
 class Weather(Frame):
     def __init__(self, parent, *args, **kargs):
         Frame.__init__(self, parent, bg='black')
@@ -20,28 +34,30 @@ class Weather(Frame):
 
         #create frame for the weather
         self.degreeFrm = Frame(self, bg='black')
-        self.degreeFrm.pack(side=TOP, anchor=W)
+        self.degreeFrm.pack(side=TOP, anchor=E)
 
         #create temperature and change attributes (font, size, color)
         self.temperature = ''
         self.temperatureLb1 = Label(self.degreeFrm, font=('Verdana', xLargeText), fg="white", bg="black")
-        self.temperatureLb1.pack(side=LEFT, anchor=N)
+        self.temperatureLb1.pack(side=TOP, anchor=E)
 
         # create current condition label and change attributes (font, size, color)
         self.currentlyLbl = Label(self, font=('Verdana', mediumText), fg="white", bg="black")
-        self.currentlyLbl.pack(side=TOP, anchor=W)
+        self.currentlyLbl.pack(side=TOP, anchor=E)
 
         # create forecast and change attributes (font, size, color)
         self.forecast = ''
         self.forecastLbl = Label(self, font=('Verdana', smallText), fg="white", bg="black")
-        self.forecastLbl.pack(side=TOP, anchor=W)
+        self.forecastLbl.pack(side=TOP, anchor=E)
 
         # create location and change attributes (font, size, color)
         self.location = ''
         self.locationLbl = Label(self, font=('Verdana', smallText), fg="white", bg="black")
-        self.locationLbl.pack(side=TOP, anchor=W)
+        self.locationLbl.pack(side=TOP, anchor=E)
 
         self.get_weather()
+
+
 
     def get_weather(self):
         try:
