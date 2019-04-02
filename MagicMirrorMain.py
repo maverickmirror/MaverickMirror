@@ -81,7 +81,7 @@ class Clock(Frame):
             self.date = dateFormat
             self.dateLabel.config(text=dateFormat)
 
-        self.timeLabel.after(20000, self.tick)
+        self.timeLabel.after(200, self.tick)
 
 class Weather(Frame):
     def __init__(self, parent, *args, **kargs):
