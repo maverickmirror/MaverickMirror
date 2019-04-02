@@ -7,8 +7,14 @@ import requests
 import json
 import traceback
 import feedparser
-import schedule
 
+
+''' import the following for stock market   '''
+import datetime as dt
+from datetime import timedelta
+import  matplotlib.pyplot as mp
+import pandas as pd
+import  pandas_datareader.data as wb
 
 
 globalNews = True  # google news
@@ -75,7 +81,7 @@ class Clock(Frame):
             self.date = dateFormat
             self.dateLabel.config(text=dateFormat)
 
-        self.timeLabel.after(200, self.tick)
+        self.timeLabel.after(20000, self.tick)
 
 class Weather(Frame):
     def __init__(self, parent, *args, **kargs):
@@ -199,7 +205,54 @@ class googleNews(Frame):
             print ("Error: %s. Cannot get the google news." % googleNewsException)
 
         # update news display every 30 minutes
-        self.after(1800, self.getNews)
+        self.after(20000, self.getNews)
+
+class stockMarket(Frame):
+    def __init__(self, parent, *args, **kwargs):
+        Frame.__init__(self, parent, *args, **kwargs)
+        self.config(bg='black')     # background color
+        self.title = 'Wells Fargo Stock' # 'google news' is more internationally generic
+        self.newsLbl = Label(self, text=self.title, font=('Helvetica', newsFontSize), fg="white", bg="black")
+        self.newsLbl.pack(side=TOP, anchor=W)
+        self.headlinesContainer = Frame(self, bg="black")
+        self.headlinesContainer.pack(side=TOP)
+        self.getStockMarket()
+
+    # get the world news information method
+    # parse it, check if a title exist, then result the specified number of google news titles.
+    def getStockMarket(self):
+        try:
+            # remove all children
+            for widget in self.headlinesContainer.winfo_children():
+                widget.destroy()
+
+            # number of days
+            nOfDays = 2
+
+            # todays date
+            now = dt.datetime.now()
+
+            # changing days, auto update days
+            # today - 2 days
+            start = now - timedelta(days=nOfDays)
+
+            # wells fargo stock name
+            stockName = 'WFC'
+
+            # get wells fargo data from yahoo
+            WellsFarsoStockMarket = wb.DataReader(stockName, 'yahoo', start, now)
+
+
+            # display Yahoo
+            headline = headLines(self.headlinesContainer, WellsFarsoStockMarket.head())
+            headline.pack(side=TOP, anchor=W)
+
+        except Exception as stock_number:
+            traceback.print_exc()
+            print ("Error: %s. Cannot get the stock ." % stock_number)
+
+        # update news display every 30 minutes
+        self.after(180, self.getStockMarket)
 
 
 
@@ -273,7 +326,12 @@ class Display:
         # initialize world News
         # creates news and show it on the screen
         self.myNews = googleNews(self.bottomFrame)
-        self.myNews.pack(side=BOTTOM, anchor=W, padx=100, pady=10)
+        self.myNews.pack(side=BOTTOM, anchor=W, padx=100, pady=20)
+
+        # initialize world News
+        # creates news and show it on the screen
+        self.myStock = stockMarket(self.bottomFrame)
+        self.myStock.pack(side=BOTTOM, anchor=W, padx=100, pady=20)
 
         #initialize quote
         #create quote and show it on the screen
