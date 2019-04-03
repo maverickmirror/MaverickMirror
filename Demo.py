@@ -3,10 +3,16 @@ from tkinter import ttk
 import speech_recognition as sr
 import pyaudio
 import os
-
+import datetime as dt
+from datetime import timedelta
+import matplotlib.pyplot as mp
+import pandas as pd
+import pandas_datareader.data as wb
 import multiprocessing
 import locale
 import threading
+
+
 from Display2 import Display2
 from Display1 import Display1
 from DisplayStart import DisplayStart
@@ -84,7 +90,7 @@ def speech_profile_switch():
         r = sr.Recognizer()
         with sr.Microphone() as source:
             print("Select a user")
-            r.adjust_for_ambient_noise(source, duration=1)
+            r.adjust_for_ambient_noise(source, duration=0.5)
             audio = r.listen(source)
 
         try:

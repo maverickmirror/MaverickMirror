@@ -4,6 +4,8 @@ from Services.TimeService import Clock
 from Services.NewsFeedService import googleNews
 from Services.WeatherService import Weather
 from Services.QuoteService import Quotes
+from Services.StocksService import stockMarket
+
 
 
 
@@ -62,7 +64,10 @@ class Display1:
         # initialize world News
         # creates news and show it on the screen
         self.myNews = googleNews(self.bottomFrame)
-        self.myNews.pack(side=BOTTOM, anchor=W, padx=100, pady=10)
+        self.myNews.pack(side=TOP, anchor=W, padx=100, pady=10)
+
+        self.myStock = stockMarket(self.bottomFrame)
+        self.myStock.pack(side=LEFT, anchor=S, padx=100, pady=0)
 
         # initialize quote
         # create quote and show it on the screen
