@@ -12,9 +12,9 @@ import feedparser
 ''' import the following for stock market   '''
 import datetime as dt
 from datetime import timedelta
-import  matplotlib.pyplot as mp
+import matplotlib.pyplot as mp
 import pandas as pd
-import  pandas_datareader.data as wb
+import pandas_datareader.data as wb
 
 
 globalNews = True  # google news

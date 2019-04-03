@@ -4,7 +4,7 @@ from Services.TimeService import Clock
 from Services.NewsFeedService import googleNews
 from Services.WeatherService import Weather
 from Services.QuoteService import Quotes
-
+from Message import Message
 
 
 
@@ -25,17 +25,17 @@ mediumText = 28
 smallText = 18
 
 
-class Display2:
+class DisplayStart:
     def __init__(self):
-        self.top = Toplevel()
-        self.top.title("Second Custom Profile")
+        self.tk = Tk()
+        self.tk.title("Start Screen")
         # self.v = self.tk.IntVar()
-        self.top.configure(background='black')
-        self.top.attributes("-fullscreen", True, '-topmost', True)
+        self.tk.configure(background='black')
+        self.tk.attributes("-fullscreen", True, '-topmost', True)
         #self.top.attributes('-topmost', True)
         # Create locations on the screen
-        self.topFrame = Frame(self.top, background='black')
-        self.bottomFrame = Frame(self.top, background='black')
+        self.topFrame = Frame(self.tk, background='black')
+        self.bottomFrame = Frame(self.tk, background='black')
         #self.leftFrame = Frame(self.top, background='orange')
         #self.rightFrame = Frame(self.top, background='green')
         self.topFrame.pack(side=TOP, fill=BOTH, expand=YES)
@@ -45,45 +45,38 @@ class Display2:
 
         self.state = False
         # Binds Return key to toggle fullscreen on/off
-        self.top.bind("<Return>", self.toggle_fullscreen)
+        self.tk.bind("<Return>", self.toggle_fullscreen)
         # Binds Escape key to close fullscreen
-        self.top.bind("<Escape>", self.close_fullscreen)
+        self.tk.bind("<Escape>", self.close_fullscreen)
 
         # initialize Clock
         # creates clock and sets location on screen
         self.clock = Clock(self.bottomFrame)
-        self.clock.pack(side=RIGHT, anchor=E, padx=70,)
+        self.clock.pack(side=BOTTOM, anchor=E, padx=100,)
 
-        # initialize Weather
-        # creates weather and sets location on screen
-        self.weather = Weather(self.topFrame)
-        self.weather.pack(side=RIGHT, anchor=N, padx=100, pady=60)
+        self.message = Message(self.topFrame)
+        self.message.pack(side=BOTTOM, anchor=E, padx=100, )
 
-        # initialize world News
-        # creates news and show it on the screen
-        self.myNews = googleNews(self.topFrame)
-        self.myNews.pack(side=TOP, anchor=W, padx=100, pady=200)
 
-        #initialize quote
-        #create quote and show it on the screen
-        self.quote = Quotes(self.bottomFrame)
-        self.quote.pack(side=LEFT, anchor=W, padx=100,)
+
+
+
 
     def toggle_fullscreen(self, event=None):
         # toggles fullscreen and windowed
         # changes self.state to opposite value aka toggles it
         self.state = not self.state
-        self.top.attributes("-fullscreen", self.state)
+        self.tk.attributes("-fullscreen", self.state)
         return "break"
 
     def close_fullscreen(self, event=None):
         # exits out of fullscreen
         # sets self.state to False (off)
         self.state = False
-        self.top.attributes("-fullscreen", False)
+        self.tk.attributes("-fullscreen", False)
         return "break"
 
 
 if __name__ == '__main__':
-    x = Display2()
-    x.top.mainloop()
+    x = DisplayStart()
+    x.tk.mainloop()

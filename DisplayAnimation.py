@@ -4,6 +4,7 @@ from Services.TimeService import Clock
 from Services.NewsFeedService import googleNews
 from Services.WeatherService import Weather
 from Services.QuoteService import Quotes
+from gif_animate import Animation
 
 
 
@@ -25,21 +26,23 @@ mediumText = 28
 smallText = 18
 
 
-class Display2:
+class DisplayAnimation:
     def __init__(self):
         self.top = Toplevel()
-        self.top.title("Second Custom Profile")
+        self.top.overrideredirect(1)
+        #self.top.title("Second Custom Profile")
         # self.v = self.tk.IntVar()
         self.top.configure(background='black')
-        self.top.attributes("-fullscreen", True, '-topmost', True)
+        #self.top.wm_attributes('-alpha', 0.5)
+        self.top.attributes("-fullscreen", False, '-topmost', True)
         #self.top.attributes('-topmost', True)
         # Create locations on the screen
         self.topFrame = Frame(self.top, background='black')
-        self.bottomFrame = Frame(self.top, background='black')
+        #self.bottomFrame = Frame(self.top, background='black')
         #self.leftFrame = Frame(self.top, background='orange')
         #self.rightFrame = Frame(self.top, background='green')
-        self.topFrame.pack(side=TOP, fill=BOTH, expand=YES)
-        self.bottomFrame.pack(side=BOTTOM, fill=BOTH, expand=YES)
+        self.topFrame.pack(side=TOP, fill=BOTH, expand=NO)
+        #self.bottomFrame.pack(side=BOTTOM, fill=BOTH, expand=YES)
         #self.leftFrame.pack(side=LEFT, fill=BOTH, expand=YES)
         #self.rightFrame.pack(side=RIGHT, fill=BOTH, expand=YES)
 
@@ -51,23 +54,9 @@ class Display2:
 
         # initialize Clock
         # creates clock and sets location on screen
-        self.clock = Clock(self.bottomFrame)
-        self.clock.pack(side=RIGHT, anchor=E, padx=70,)
+        self.animation = Animation(self.topFrame)
+        self.animation.pack(side=TOP, anchor=E, padx=0,)
 
-        # initialize Weather
-        # creates weather and sets location on screen
-        self.weather = Weather(self.topFrame)
-        self.weather.pack(side=RIGHT, anchor=N, padx=100, pady=60)
-
-        # initialize world News
-        # creates news and show it on the screen
-        self.myNews = googleNews(self.topFrame)
-        self.myNews.pack(side=TOP, anchor=W, padx=100, pady=200)
-
-        #initialize quote
-        #create quote and show it on the screen
-        self.quote = Quotes(self.bottomFrame)
-        self.quote.pack(side=LEFT, anchor=W, padx=100,)
 
     def toggle_fullscreen(self, event=None):
         # toggles fullscreen and windowed
@@ -85,5 +74,5 @@ class Display2:
 
 
 if __name__ == '__main__':
-    x = Display2()
+    x = DisplayAnimation()
     x.top.mainloop()

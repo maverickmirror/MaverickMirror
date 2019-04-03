@@ -4,11 +4,21 @@ import speech_recognition as sr
 import pyaudio
 import os
 
+from Popup import Popup
 from Display2 import Display2
 from Display1 import Display1
+from DisplayStart import DisplayStart
+from DisplayAnimation import DisplayAnimation
 
 root = Tk()
 
+def popupmessage():
+    while True:
+        p = Popup()
+        #p.popup.update_idletasks()
+        #p.popup.update()
+        p.popup.mainloop()
+        #speech_profile_switch()
 def runProgram2():
     while True:
         y = Display2()
@@ -16,6 +26,23 @@ def runProgram2():
         y.top.update()
         start_speech_recording()
         #y.top.mainloop()
+
+def runProgramStart():
+    while True:
+        b = DisplayStart()
+        b.top.update_idletasks()
+        b.top.update()
+        start_speech_recording()
+        #x.top.mainloop()
+
+def runAnimation():
+    while True:
+        p = DisplayAnimation()
+        #p.top.mainloop()
+        #p.top.update_idletasks()
+        p.top.after(5000, p.top.destroy)
+        start_speech_recording()
+        p.top.mainloop()
 
 
 def runProgram1():
@@ -31,14 +58,41 @@ LARGE_FONT= ("Verdana", 12)
 NORM_FONT = ("Helvetica", 10)
 SMALL_FONT = ("Helvetica", 8)
 
-def popupmsg(msg):
-    popup = Tk()
-    popup.wm_title("!")
-    label = ttk.Label(popup, text=msg, font=NORM_FONT)
-    label.pack(side="top", fill="x", pady=10)
-    B1 = ttk.Button(popup, text="Okay", command = popup.destroy)
-    B1.pack()
-    popup.mainloop()
+# def popupmsg(msg):
+#     popup = Toplevel()
+#     popup.wm_title("!")
+#     label = ttk.Label(popup, text=msg, font=NORM_FONT)
+#     label.pack(side="top", fill="x", pady=10)
+#
+#     #B1 = ttk.Button(popup, text="Okay", command = popup.destroy)
+#     #B1.pack()
+#     speech_profile_switch()
+#     popup.mainloop()
+
+
+def start_speech_recording():
+    # Record Audio
+    global keyphrase
+    while True:
+        r = sr.Recognizer()
+        with sr.Microphone() as source:
+            #popupmessage()
+            print("Say something!")
+            r.adjust_for_ambient_noise(source, duration=1)
+            audio = r.listen(source)
+
+        try:
+            keyphrase = r.recognize_google(audio).lower()
+            print("You said: " + r.recognize_google(audio))
+            if "hello" in keyphrase:
+                #popupmsg("What would you like to do")
+                speech_profile_switch()
+
+        except sr.UnknownValueError:
+            print("Google Speech Recognition could not understand audio")
+        except sr.RequestError as e:
+            print("Could not request results from Google Speech Recognition service; {0}".format(e))
+
 
 
 def speech_profile_switch():
@@ -46,6 +100,7 @@ def speech_profile_switch():
     while True:
         r = sr.Recognizer()
         with sr.Microphone() as source:
+            #popupmessage()
             print("Select a user")
             r.adjust_for_ambient_noise(source, duration=1)
             audio = r.listen(source)
@@ -54,7 +109,7 @@ def speech_profile_switch():
 
             recognised_speech = r.recognize_google(audio).lower()
             print("You said: " + r.recognize_google(audio))
-            if "display" in recognised_speech:
+            if "home" in recognised_speech:
                 runProgram1()
 
             elif "profile" in recognised_speech:
@@ -72,28 +127,20 @@ def speech_profile_switch():
             print("Could not request results from Google Speech Recognition service; {0}".format(e))
 
 
-def start_speech_recording():
-    # Record Audio
-    global keyphrase
-    while True:
-        r = sr.Recognizer()
-        with sr.Microphone() as source:
-            print("Say something!")
-            r.adjust_for_ambient_noise(source, duration=1)
-            audio = r.listen(source)
-
-        try:
-            keyphrase = r.recognize_google(audio).lower()
-            print("You said: " + r.recognize_google(audio))
-            if "smart mirror" in keyphrase:
-                #popupmsg("What would you like to do")
-                speech_profile_switch()
-
-        except sr.UnknownValueError:
-            print("Google Speech Recognition could not understand audio")
-        except sr.RequestError as e:
-            print("Could not request results from Google Speech Recognition service; {0}".format(e))
-
+# class popupmsg:
+#     def __init__(self):
+#         self.popup = Toplevel()
+#         self.popup.wm_title("!")
+#         label = ttk.Label(self.popup, text="what would you like to do?", font=NORM_FONT)
+#         label.pack(side="top", fill="x", pady=10)
+#
+#         # B1 = ttk.Button(popup, text="Okay", command = popup.destroy)
+#         # B1.pack()
+#     speech_profile_switch()
+#     #popup.mainloop()
+#
+#     def quit(self):
+#         self.popup.destroy()
 
 #
 #
@@ -155,7 +202,7 @@ root.rowconfigure(0, weight=1)
 #feet_entry.grid(column=2, row=1, sticky=(W, E))
 
 #ttk.Label(mainframe, textvariable=meters).grid(column=2, row=2, sticky=(W, E))
-ttk.Button(mainframe, text="Start Voice Commands", command=start_speech_recording).grid(column=3, row=3, sticky=N)
+ttk.Button(mainframe, text="Start Voice Commands", command=runAnimation).grid(column=3, row=3, sticky=N)
 
 #ttk.Label(mainframe, text="feet").grid(column=3, row=1, sticky=W)
 #ttk.Label(mainframe, text="is equivalent to").grid(column=1, row=2, sticky=E)
@@ -169,5 +216,7 @@ root.bind('<Return>', start_speech_recording)
 
 
 root.mainloop()
+
+
 
 
