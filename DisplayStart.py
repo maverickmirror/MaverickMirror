@@ -52,10 +52,10 @@ class DisplayStart:
         # initialize Clock
         # creates clock and sets location on screen
         self.clock = Clock(self.bottomFrame)
-        self.clock.pack(side=BOTTOM, anchor=E, padx=100,)
+        self.clock.pack(side=BOTTOM, anchor=E, padx=50, pady=50)
 
         self.message = Message(self.topFrame)
-        self.message.pack(side=BOTTOM, anchor=E, padx=100, )
+        self.message.pack(side=BOTTOM, anchor=N, padx=0, )
 
 
 

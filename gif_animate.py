@@ -18,7 +18,7 @@ class Animation(Frame):
                 Image.open('smallLoading.gif'))]
         self.image = self.canvas.create_image(40, 40, image=self.sequence[0])
         self.animate(1)
-        self.label = Label(self, text='listening', font=("MS Sans Serif", smallText), fg="white", bg="black")
+        self.label = Label(self, text='listening', font=("Verdana", smallText), fg="white", bg="black")
         self.label.pack(side=TOP, anchor=N, padx=70, )
 
     def animate(self, counter):
