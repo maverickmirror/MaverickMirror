@@ -1,3 +1,36 @@
+from tkinter import *
+import time
+import requests
+import json
+import traceback
+import feedparser
+#import gdata
+#import schedule
+
+globalNews = True  # google news
+globalStockMarketNews = True  # stock market
+newsFontSize = 15  # font size for the google news and stock market news
+
+youtubeVideos = True
+youtubeFontSize = 10
+
+weatherAPIToken = '6d60a7966b8e994764a623080558cf19'
+weatherLang = 'en'
+weatherUnit = 'us'
+latitude = '44.1634663'
+longitude = '-93.9993505'
+
+xLargeText = 80
+largeText = 56
+mediumText = 28
+smallText = 18
+
+
+
+
+
+
+
 class Youtube(Frame):
     def __init__(self, parent, *args, **kwargs):
         Frame.__init__(self, parent, *args, **kwargs)
@@ -21,11 +54,11 @@ class Youtube(Frame):
                 # parsed a Youtube popular rss website
                 youtubeVideosFeedparsed = feedparser.parse("https://www.youtube.com/feeds/videos.xml?channel_id=UCzQUP1qoWDoEbmsQxvdjxgQ")
                 
-                # if a title exist, then run top 3 news headlines;
+                # if a title exist, then run recent 5 youtube titles;
                 if ('title' in youtubeVideosFeedparsed.feed):
                     for post in youtubeVideosFeedparsed.entries[0:5]:
                         
-                        trending = Trending(self.youtubeContainer, post.title, post.media_thumbnail)
+                        trending = Trending(self.youtubeContainer, post.title, post.media_content)
                         trending.pack(side=TOP, anchor=W)
 
                                 
@@ -34,13 +67,15 @@ class Youtube(Frame):
             print("Error: %s. Cannot get the youtube videos." % youtubeVideosException)
 
         # update PowerfulJRE every 30 minutes
-        self.getYoutube
+        self.after(1800, self.getYoutube)
+        
 class Trending(Frame):
     def __init__(self, parent, event_name="",event_name2=""):
         Frame.__init__(self, parent, bg='black')
         self.eventName = event_name
         self.eventNameLbl = Label(self, text=self.eventName, font=('Helvetica', youtubeFontSize), fg="white", bg="black")
         self.eventNameLbl.pack(side=BOTTOM, anchor=N)
+        
         self.eventName2 = event_name2
         self.eventNameLbl2 = Label(self, text=self.eventName2, font=('Helvetica', youtubeFontSize), fg="white", bg="black")
         self.eventNameLbl2.pack(side=BOTTOM, anchor=N)
