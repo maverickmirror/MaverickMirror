@@ -25,6 +25,9 @@ SMALL_FONT = ("Helvetica", 8)
 
 root = Tk()
 
+
+
+
 def setlocale(name): #thread proof function to work with locale
     with LOCALE_LOCK:
         saved = locale.setlocale(locale.LC_ALL)
@@ -76,12 +79,13 @@ def start_speech_recording():
             keyphrase = r.recognize_google(audio).lower()
             print("You said: " + r.recognize_google(audio))
             if "hello" in keyphrase:
-                runAnimation()
+                return runAnimation()
 
         except sr.UnknownValueError:
             print("Google Speech Recognition could not understand audio")
         except sr.RequestError as e:
             print("Could not request results from Google Speech Recognition service; {0}".format(e))
+
 
 
 def speech_profile_switch():
@@ -97,11 +101,13 @@ def speech_profile_switch():
             recognised_speech = r.recognize_google(audio).lower()
             print("You said: " + r.recognize_google(audio))
             if "home" in recognised_speech:
-                runProgram1()
+                return runProgram1()
 
             elif "profile" in recognised_speech:
-                runProgram2()
+                return runProgram2()
 
+            elif "cancel" in recognised_speech:
+                break
         except sr.UnknownValueError:
             print("Google Speech Recognition could not understand audio")
         except sr.RequestError as e:
