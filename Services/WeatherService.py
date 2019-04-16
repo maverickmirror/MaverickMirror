@@ -42,7 +42,7 @@ class Weather(Frame):
         self.temperatureLb1.pack(side=TOP, anchor=E)
 
         # create current condition label and change attributes (font, size, color)
-        self.currentlyLbl = Label(self, font=('Verdana', mediumText), fg="white", bg="black")
+        self.currentlyLbl = Label(self, font=('Verdana', mediumText), fg="white", bg="black", wraplength=500)
         self.currentlyLbl.pack(side=TOP, anchor=E)
 
         # create forecast and change attributes (font, size, color)

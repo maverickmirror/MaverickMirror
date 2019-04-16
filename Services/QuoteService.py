@@ -30,7 +30,7 @@ class Quotes(Frame):
         Frame.__init__(self, parent, bg='black')
         self.quote = ''
         #self.quoteLbl = Text(self, font=('Verdana', smallText), fg="white", bg="black", height=4, width=50)
-        self.quoteLbl = Label(self, font=('Verdana', smallText), fg="white", bg="black", height=4, width=50)
+        self.quoteLbl = Label(self, font=('Verdana', smallText), fg="white", bg="black", height=5, width=50, wraplength=500)
         self.quoteLbl.pack(side=TOP, anchor=N)
 
         self.quotes_get()
@@ -53,3 +53,6 @@ class Quotes(Frame):
             # print self.data_get(self.data_fetch(url))
         except IOError:
             print('no internet')
+        except ValueError:
+            quote = "You miss 100% of the shots you don't take." + "\n" + "- Wayne Gretzky"
+            self.quoteLbl.config(text=quote)
