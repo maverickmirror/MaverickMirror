@@ -31,7 +31,7 @@ class DisplayStart:
         self.tk.title("Start Screen")
         # self.v = self.tk.IntVar()
         self.tk.configure(background='black')
-        self.tk.attributes("-fullscreen", True, '-topmost', True)
+        self.tk.attributes("-fullscreen", False, '-topmost', True)
         #self.top.attributes('-topmost', True)
         # Create locations on the screen
         self.topFrame = Frame(self.tk, background='black')
@@ -76,7 +76,7 @@ class DisplayStart:
         self.tk.attributes("-fullscreen", False)
         return "break"
 
-
-if __name__ == '__main__':
-    x = DisplayStart()
-    x.tk.mainloop()
+#
+# if __name__ == '__main__':
+#     x = DisplayStart()
+#     x.tk.mainloop()

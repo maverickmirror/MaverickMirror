@@ -72,7 +72,13 @@ class DisplayAnimation:
         self.top.attributes("-fullscreen", False)
         return "break"
 
+def main():
+    root = Tk()
+    DisplayAnimation()
+    root.mainloop()
 
-if __name__ == '__main__':
-    x = DisplayAnimation()
-    x.top.mainloop()
+# main()
+
+# if __name__ == '__main__':
+#     x = DisplayAnimation()
+#     x.top.mainloop()

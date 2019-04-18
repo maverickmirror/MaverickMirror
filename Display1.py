@@ -34,7 +34,7 @@ class Display1:
         self.top.title("First Custom Profile")
         # self.v = self.tk.IntVar()
         self.top.configure(background='black')
-        self.top.attributes("-fullscreen", True, '-topmost', True)
+        self.top.attributes("-fullscreen", False, '-topmost', True)
         #self.top.attributes('-topmost', True)
         # Create locations on the screen
         self.topFrame = Frame(self.top, background='black')
@@ -93,6 +93,6 @@ class Display1:
         return "break"
 
 
-if __name__ == '__main__':
-    x = Display1()
-    x.top.mainloop()
+# if __name__ == '__main__':
+#     x = Display1()
+#     x.top.mainloop()
